@@ -8,4 +8,9 @@ Redmine::Plugin.register :redmine_contributor_licensing do
   author_url 'http://www.littlestreamsoftware.com'
   version '0.1.0'
   requires_redmine :version_or_higher => '0.9.0'
+
+  settings(:partial => 'settings/redmine_contributor_licensing',
+           :default => {
+             :content => 'Fill in your contributor licensing agreement here'
+           })
 end

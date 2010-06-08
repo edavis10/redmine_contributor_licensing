@@ -1,0 +1,10 @@
+<fieldset>
+  <%= content_tag(:p, l(:contributor_licensing_text_settings_help)) %>
+
+  <p>
+    <%= content_tag(:label, l(:contributor_licensing_label_content)) %>
+    <%= text_area_tag("settings[content]", @settings['content'], :class => 'wiki-edit', :rows => 30) %>
+  </p>
+</fieldset>
+
+<%= wikitoolbar_for 'settings_content' %>
