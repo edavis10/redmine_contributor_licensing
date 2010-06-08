@@ -10,12 +10,7 @@ class ConfiguringTest < ActionController::IntegrationTest
 
   should "load a wikitoolbar in the plugin settings" do
     login_as
-
-    click_link "Administration"
-    click_link "Plugins"
-    click_link "Configure"
-
-    assert_equal "/settings/plugin/redmine_contributor_licensing", current_url
+    visit_plugin_configuration
     assert response.body.include?("jsToolBar($('settings_content'))")
   end
 
@@ -23,24 +18,15 @@ class ConfiguringTest < ActionController::IntegrationTest
     Setting['plugin_redmine_contributor_licensing'] = {'content' => 'A saved string'}
     
     login_as
-
-    click_link "Administration"
-    click_link "Plugins"
-    click_link "Configure"
-
-    assert_equal "/settings/plugin/redmine_contributor_licensing", current_url
+    visit_plugin_configuration
     assert_select 'textarea', :text => /A saved string/
   end
   
 
   should "save any content to the plugin's settings" do
     login_as
+    visit_plugin_configuration
 
-    click_link "Administration"
-    click_link "Plugins"
-    click_link "Configure"
-
-    assert_equal "/settings/plugin/redmine_contributor_licensing", current_url
     fill_in "settings_content", :with => 'An updated content'
     click_button 'Apply'
 
@@ -49,6 +35,15 @@ class ConfiguringTest < ActionController::IntegrationTest
 
   end
   
-    
+  protected
+  
+  def visit_plugin_configuration
+    click_link "Administration"
+    click_link "Plugins"
+    click_link "Configure"
+
+    assert_equal "/settings/plugin/redmine_contributor_licensing", current_url
+  end
+  
 end
 
