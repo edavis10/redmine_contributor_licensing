@@ -1,0 +1,20 @@
+<%= content_tag(:h1, l(:contributor_licensing_title)) %>
+
+<div id="license-content" class="box">
+  <%= textilizable(@content) %>
+</div>
+
+<% form_for @contributor_license, :builder => TabularFormBuilder do |f| %>
+  <% if @contributor_license.errors.on(:acceptance) %>
+    <div id="errorExplanation" class="errorExplanation">
+      <ul>
+        <li><%= l(:field_acceptance) %></li>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.text_field :acceptance, :required => true, :id => 'acceptance' %>
+  </div>
+  <%= submit_tag(l(:contributor_licensing_label_accept)) %>
+<% end %>
