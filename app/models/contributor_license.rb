@@ -2,6 +2,7 @@ class ContributorLicense < ActiveRecord::Base
   unloadable
 
   attr_accessor :acceptance
+  attr_accessible :acceptance # Block state and user
   
   belongs_to :user
 
