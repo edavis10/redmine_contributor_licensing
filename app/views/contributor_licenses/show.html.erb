@@ -1,3 +1,8 @@
+<div class="contextual">
+  <%= link_to(l(:contributor_licensing_title), contributor_licenses_path, :class => 'icon icon-license') %>
+  <%= link_to(l(:contributor_licensing_text_upload), upload_contributor_licenses_path, :class => 'icon icon-upload') %>
+</div>
+
 <%= content_tag(:h1, l(:contributor_licensing_title)) %>
 
 <div id="license-content" class="box">
@@ -14,6 +19,7 @@
   <% end %>
 
   <div>
+    <%= hidden_field(:clickwrap, true) %>
     <%= f.text_field :acceptance, :required => true, :id => 'acceptance' %>
   </div>
   <%= submit_tag(l(:contributor_licensing_label_accept)) %>

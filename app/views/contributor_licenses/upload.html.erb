@@ -1,0 +1,16 @@
+<div class="contextual">
+  <%= link_to(l(:contributor_licensing_title), contributor_licenses_path, :class => 'icon icon-license') %>
+  <%= link_to(l(:contributor_licensing_text_upload), upload_contributor_licenses_path, :class => 'icon icon-upload') %>
+</div>
+
+<%= content_tag(:h1, l(:contributor_licensing_title)) %>
+
+<% form_for @contributor_license, :builder => TabularFormBuilder, :html => {:multipart => true} do |f| %>
+  <div>
+    <p>
+      <%=l(:label_attachment_plural)%><br />
+      <%= render :partial => 'attachments/form' %>
+    </p>
+  </div>
+  <%= submit_tag(l(:contributor_licensing_label_accept)) %>
+<% end %>

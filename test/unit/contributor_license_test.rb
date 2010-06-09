@@ -2,6 +2,7 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class ContributorLicenseTest < ActiveSupport::TestCase
   should_belong_to :user
+  should_have_many :attachments
 
   should "initialize state to 'pending'" do
     assert_equal "pending", ContributorLicense.new.state

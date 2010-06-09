@@ -3,6 +3,8 @@ class ContributorLicense < ActiveRecord::Base
 
   attr_accessor :acceptance
   attr_accessible :acceptance # Block state and user
+
+  acts_as_attachable
   
   belongs_to :user
 

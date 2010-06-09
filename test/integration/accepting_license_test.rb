@@ -70,6 +70,25 @@ class AcceptingLicenseTest < ActionController::IntegrationTest
   end
   
 
-  should "allow uploading a file to accept a CLA"
+  should "allow uploading a file to accept a CLA" do
+    login_as
+    visit '/'
+    click_link "Contributor License"
+    assert_equal '/contributor_licenses', current_url
+
+    click_link "Upload license agreement"
+    assert_equal '/contributor_licenses/upload', current_url
+
+    attach_file "attachments[1][file]", File.join(File.dirname(__FILE__), '..', 'fixtures', 'files', 'sample.pdf')
+    click_button "Accept"
+
+    assert_equal 'http://www.example.com/', current_url
+    assert_select '.flash', :text => /pending/i
+
+    license = @user.contributor_license
+    assert_equal 'pending', license.state
+    assert_equal 1, license.attachments.length
+  end
+  
 end
 
