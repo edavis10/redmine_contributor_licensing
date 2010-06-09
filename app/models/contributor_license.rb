@@ -8,4 +8,13 @@ class ContributorLicense < ActiveRecord::Base
   def after_initialize
     self.state = 'pending' unless self.state.present?
   end
+
+  def accept!
+    return self if state == 'accepted'
+    update_attributes({
+                        :state => 'accepted',
+                        :accepted_at => Time.now
+                      })
+    reload
+  end
 end
