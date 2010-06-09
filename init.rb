@@ -20,7 +20,7 @@ Redmine::Plugin.register :redmine_contributor_licensing do
        :caption => :contributor_licensing_title,
        :if => Proc.new {
          User.current.logged? &&
-         !User.current.accepted_contributor_license?
+         !User.current.submitted_contributor_license?
        })
 
 end

@@ -10,6 +10,7 @@ module RedmineContributorLicensing
           
           has_one :contributor_license, :dependent => :nullify
           delegate :accepted_contributor_license?, :to => :contributor_license, :allow_nil => true
+          delegate :submitted_contributor_license?, :to => :contributor_license, :allow_nil => true
         end
       end
 

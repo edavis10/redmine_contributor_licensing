@@ -16,9 +16,8 @@ class AcceptingLicenseTest < ActionController::IntegrationTest
     assert_select "#top-menu a.contributor-license"
   end
   
-  should "not show the top menu link to users who have already accepted" do
-    @license = ContributorLicense.generate!
-    @license.accept!
+  should "not show the top menu link to users who have already submitted a ContributorLicense" do
+    @license = ContributorLicense.generate! # Doesn't need to be accepted
     @user.contributor_license = @license
     
     login_as
