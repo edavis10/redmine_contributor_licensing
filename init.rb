@@ -19,7 +19,8 @@ Redmine::Plugin.register :redmine_contributor_licensing do
        {:controller => 'contributor_licenses', :action => 'show'},
        :caption => :contributor_licensing_title,
        :if => Proc.new {
-         true # TODO: only show when not accepted
+         User.current.logged? &&
+         !User.current.accepted_contributor_license?
        })
 
 end

@@ -17,4 +17,9 @@ class ContributorLicense < ActiveRecord::Base
                       })
     reload
   end
+
+  def accepted?
+    state == "accepted"
+  end
+  alias :accepted_contributor_license? :accepted?
 end
