@@ -67,7 +67,26 @@ class AcceptingLicenseTest < ActionController::IntegrationTest
 
     assert_nil @user.reload.contributor_license
   end
-  
+
+  should "block submitting multiple CLAs" do
+    login_as
+    visit '/'
+    click_link "Contributor License"
+    assert_equal '/contributor_licenses', current_url
+
+    fill_in "acceptance", :with => 'i AgRee with you'
+    click_button "Accept"
+
+    assert_equal 'http://www.example.com/', current_url
+    assert_select '.flash', :text => /accepted/i
+
+    visit '/contributor_licenses' # Direct url access
+    fill_in "acceptance", :with => 'i AgRee with you'
+    click_button "Accept"
+
+    assert_equal 1, ContributorLicense.count(:conditions => {:user_id => @user.id})
+  end
+
 
   should "allow uploading a file to accept a CLA" do
     login_as

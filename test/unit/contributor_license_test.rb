@@ -1,8 +1,20 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class ContributorLicenseTest < ActiveSupport::TestCase
-  should_belong_to :user
   should_have_many :attachments
+  should_belong_to :user
+
+  should "only allow one contributor license per user" do
+    user = User.generate_with_protected!
+    ContributorLicense.generate!(:user => user)
+    count_before = ContributorLicense.count(:conditions => {:user_id => user.id})
+
+    @duplicate_record = ContributorLicense.create(:user => user)
+    count_after = ContributorLicense.count(:conditions => {:user_id => user.id})
+
+    assert_equal count_before, count_after
+    assert_equal count_before + 1, ContributorLicense.count # nil'd records
+  end
 
   should "initialize state to 'pending'" do
     assert_equal "pending", ContributorLicense.new.state
