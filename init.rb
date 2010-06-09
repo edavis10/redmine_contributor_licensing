@@ -23,3 +23,10 @@ Redmine::Plugin.register :redmine_contributor_licensing do
        })
 
 end
+
+require 'dispatcher'
+Dispatcher.to_prepare :redmine_contributor_licensing do
+  require_dependency 'principal'
+  require_dependency 'user'
+  User.send(:include, RedmineContributorLicensing::Patches::UserPatch)
+end
