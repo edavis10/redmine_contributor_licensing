@@ -25,6 +25,10 @@ Redmine::Plugin.register :redmine_contributor_licensing do
          !User.current.submitted_contributor_license?
        })
 
+  menu(:admin_menu,
+       :contributor_license,
+       {:controller => 'contributor_licenses', :action => 'index'},
+       :caption => :contributor_licensing_title)
 end
 
 require 'dispatcher'
