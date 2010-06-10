@@ -35,6 +35,29 @@ class AdministerContributorLicensesTest < ActionController::IntegrationTest
     
   end
 
+  should "show Contributor License" do
+    @user1 = create_contributor_license_and_user
+    @license = @user1.contributor_license
+    @attachment = Attachment.generate!(:container => @license)
+    
+    login_as
+    click_link "Administration"
+    click_link "Contributor Licenses"
+
+    assert_equal "/contributor_licenses", current_url
+
+    click_link @user1.login
+    assert_equal "/contributor_licenses/#{@license.id}", current_url
+
+    assert_select 'p', :text => /#{@user1.name}/
+    assert_select 'p', :text => /#{@license.state}/
+
+    assert_select '.attachments' do
+      assert_select 'a.icon.icon-attachment', :text => /#{@attachment.filename}/
+    end
+    
+  end
+
   protected
   
   def create_contributor_license_and_user

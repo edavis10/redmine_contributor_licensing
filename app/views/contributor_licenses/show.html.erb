@@ -1,0 +1,14 @@
+<%= content_tag(:h2, l(:contributor_licensing_title)) %>
+
+<p><%= avatar resource.user, :size => "50" %> <%=h(resource.user.name) %></p>
+
+<p><%= l(:field_state) %>: <%= h(resource.state) %></p>
+
+<% if resource.accepted? %>
+  <p><%= l(:field_accepted_at) %>: <%= format_time(resource.accepted_at) %></p>
+<% end %>
+
+<% if resource.attachments.present? %>
+  <%= content_tag(:h3, l(:label_attachment_plural)) %>
+  <%= render :partial => 'attachments/links', :locals => {:attachments => resource.attachments, :options => {:author => false}} %>
+<% end %>
