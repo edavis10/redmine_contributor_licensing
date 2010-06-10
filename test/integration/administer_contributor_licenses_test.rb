@@ -58,6 +58,22 @@ class AdministerContributorLicensesTest < ActionController::IntegrationTest
     
   end
 
+  should "approve Contributor License" do
+    @user1 = create_contributor_license_and_user
+    @license = @user1.contributor_license
+    
+    login_as
+    click_link "Administration"
+    click_link "Contributor Licenses"
+
+    assert_equal "/contributor_licenses", current_url
+    assert !@license.reload.accepted?
+    click_link "Approve"
+    
+    assert_equal "http://www.example.com/contributor_licenses", current_url
+    assert @license.reload.accepted?
+  end
+
   protected
   
   def create_contributor_license_and_user

@@ -38,6 +38,16 @@ class ContributorLicensesController < InheritedResources::Base
     @contributor_license = ContributorLicense.new
   end
 
+  def approve
+    @contributor_license = ContributorLicense.find(params[:id])
+    if @contributor_license
+      @contributor_license.acceptance = 'I agree by admin'
+      @contributor_license.accept!
+      flash[:notice] = l(:contributor_license_text_accepted)
+    end
+    redirect_to contributor_licenses_path
+  end
+
   protected
   def collection
     @contributor_licenses = ContributorLicense.all(:conditions => ["#{ContributorLicense.table_name}.user_id IS NOT NULL"],

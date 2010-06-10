@@ -21,8 +21,8 @@
 	        <td align="center"><%= h(license.state) %></td>
 	        <td class="created_on" align="center"><%= format_time(license.accepted_at) %></td>
           <td class="buttons">
-            <%= link_to(l(:button_edit), edit_contributor_license_path(license), :class => 'icon icon-edit') %>
-            <%= link_to(l(:button_delete), contributor_licenses_path, :method => :delete, :class => 'icon icon-del') %>
+            <%= link_to(l(:contributor_licensing_label_approve), approve_contributor_license_path(license), :method => :put, :class => 'icon icon-edit') unless license.accepted? %>
+            <%= link_to(l(:button_delete), contributor_license_path(license), :method => :delete, :class => 'icon icon-del') %>
           </td>
         </tr>
       <% end -%>
