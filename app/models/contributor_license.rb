@@ -7,6 +7,7 @@ class ContributorLicense < ActiveRecord::Base
   acts_as_attachable
   
   belongs_to :user
+  belongs_to :accepted_by, :class_name => 'User'
 
   validates_inclusion_of :state, :in => %w(pending accepted), :allow_blank => false, :allow_nil => false
 
@@ -23,12 +24,13 @@ class ContributorLicense < ActiveRecord::Base
     end
   end
 
-  def accept!
+  def accept!(accepting_user = User.current)
     return self if state == 'accepted'
     return false unless validate_acceptance
     
     self.state = 'accepted'
     self.accepted_at = Time.now
+    self.accepted_by = accepting_user
     self.save
   end
 

@@ -6,6 +6,7 @@
 
 <% if resource.accepted? %>
   <p><%= l(:field_accepted_at) %>: <%= format_time(resource.accepted_at) %></p>
+  <p><%= l(:field_accepted_by) %>: <%= link_to_user(resource.accepted_by) %></p>
 <% end %>
 
 <% if resource.attachments.present? %>

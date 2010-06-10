@@ -3,7 +3,7 @@ require 'test_helper'
 class AdministerContributorLicensesTest < ActionController::IntegrationTest
   include IntegrationTestHelper
 
-  setup do
+  def setup
     User.current = nil
     @user = User.generate!(:login => 'existing', :password => 'existing', :password_confirmation => 'existing', :admin => true)
   end
@@ -72,6 +72,7 @@ class AdministerContributorLicensesTest < ActionController::IntegrationTest
     
     assert_equal "http://www.example.com/contributor_licenses", current_url
     assert @license.reload.accepted?
+    assert_equal @user, @license.accepted_by
   end
 
   protected

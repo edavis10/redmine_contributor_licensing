@@ -49,6 +49,7 @@ class AcceptingLicenseTest < ActionController::IntegrationTest
 
     license = @user.contributor_license
     assert_equal 'accepted', license.state
+    assert_equal @user, license.accepted_by
   end
   
   should "check that 'I agree' was used to accept a CLA" do

@@ -5,6 +5,7 @@ en:
   field_acceptance: "Enter 'I agree' to accept"
   field_state: "State"
   field_accepted_at: "Accepted at"
+  field_accepted_by: "Accepted by"
   contributor_licensing_label_accept: "Accept"
   contributor_license_text_accepted: "Contributor License Accepted"
   contributor_license_text_pending: "Contributor License pending approval"

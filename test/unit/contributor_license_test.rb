@@ -3,6 +3,7 @@ require File.dirname(__FILE__) + '/../test_helper'
 class ContributorLicenseTest < ActiveSupport::TestCase
   should_have_many :attachments
   should_belong_to :user
+  should_belong_to :accepted_by
 
   should "only allow one contributor license per user" do
     user = User.generate_with_protected!
@@ -64,6 +65,7 @@ class ContributorLicenseTest < ActiveSupport::TestCase
     context "with a valid acceptance" do
       setup do
         @license = ContributorLicense.generate!(:acceptance => 'I agree')
+        User.current = @user = User.generate!
       end
       
       should "update the state to 'accepted'" do
@@ -77,6 +79,14 @@ class ContributorLicenseTest < ActiveSupport::TestCase
         @license.accept!
 
         assert @license.reload.accepted_at
+      end
+
+      should "associate with the accepting user" do
+        assert_equal nil, @license.accepted_by
+
+        @license.accept!(@user)
+
+        assert_equal @user, @license.reload.accepted_by
       end
       
     end
