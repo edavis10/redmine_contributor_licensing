@@ -37,5 +37,12 @@ class ContributorLicensesController < InheritedResources::Base
   def upload
     @contributor_license = ContributorLicense.new
   end
+
+  protected
+  def collection
+    @contributor_licenses = ContributorLicense.all(:conditions => ["#{ContributorLicense.table_name}.user_id IS NOT NULL"],
+                                                   :order => "#{User.table_name}.login ASC",
+                                                   :include => :user)
+  end
   
 end

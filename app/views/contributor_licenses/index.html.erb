@@ -1,0 +1,30 @@
+<h2><%= l(:contributor_licensing_label_plural) %></h2>
+
+<div class="autoscroll">
+  <table class="list" id="contributor-licenses">
+    <thead>
+      <tr>
+        <%= content_tag(:th, l(:field_user)) %>
+        <%= content_tag(:th, l(:field_state)) %>
+        <%= content_tag(:th, l(:field_accepted_at)) %>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% collection.each do |license| -%>
+        <tr class="user <%= cycle("odd", "even") %>" id="contributor-license-<%= h(license.id) %>">
+	        <td class="username"><%= avatar(license.user, :size => "14") %><%= link_to h(license.user.login), :controller => 'users', :action => 'edit', :id => license.user %></td>
+	        <td align="center"><%= h(license.state) %></td>
+	        <td class="created_on" align="center"><%= format_time(license.accepted_at) %></td>
+          <td class="buttons">
+            <%= link_to(l(:button_edit), edit_contributor_license_path(license), :class => 'icon icon-edit') %>
+            <%= link_to(l(:button_delete), contributor_licenses_path, :method => :delete, :class => 'icon icon-del') %>
+          </td>
+        </tr>
+      <% end -%>
+    </tbody>
+  </table>
+</div>
+
+<% html_title(l(:contributor_licensing_label_plural)) %>

@@ -28,7 +28,7 @@ Redmine::Plugin.register :redmine_contributor_licensing do
   menu(:admin_menu,
        :contributor_license,
        {:controller => 'contributor_licenses', :action => 'index'},
-       :caption => :contributor_licensing_title)
+       :caption => :contributor_licensing_label_plural)
 end
 
 require 'dispatcher'
