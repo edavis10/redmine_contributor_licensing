@@ -16,7 +16,7 @@ Redmine::Plugin.register :redmine_contributor_licensing do
 
   menu(:top_menu,
        :contributor_license,
-       {:controller => 'contributor_licenses', :action => 'show'},
+       {:controller => 'contributor_licenses', :action => 'sign'},
        :caption => :contributor_licensing_title,
        :if => Proc.new {
          User.current.logged? &&

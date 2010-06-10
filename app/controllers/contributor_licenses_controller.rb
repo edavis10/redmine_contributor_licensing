@@ -1,7 +1,7 @@
 class ContributorLicensesController < ApplicationController
   unloadable
   
-  def show
+  def sign
     @contributor_license = ContributorLicense.new
     @content = Setting.plugin_redmine_contributor_licensing['content']
   end
@@ -26,7 +26,7 @@ class ContributorLicensesController < ApplicationController
       end
       redirect_to root_path
     else
-      render :action => 'show'
+      render :action => 'sign'
     end
   end
 

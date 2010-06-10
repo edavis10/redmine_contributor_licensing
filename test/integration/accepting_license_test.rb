@@ -30,7 +30,7 @@ class AcceptingLicenseTest < ActionController::IntegrationTest
     login_as
     visit '/'
     click_link "Contributor License"
-    assert_equal '/contributor_licenses', current_url
+    assert_equal '/contributor_licenses/sign', current_url
 
     assert_select 'div#license-content', :text => /Here is some content/
   end
@@ -39,7 +39,7 @@ class AcceptingLicenseTest < ActionController::IntegrationTest
     login_as
     visit '/'
     click_link "Contributor License"
-    assert_equal '/contributor_licenses', current_url
+    assert_equal '/contributor_licenses/sign', current_url
 
     fill_in "acceptance", :with => 'i AgRee with you'
     click_button "Accept"
@@ -55,7 +55,7 @@ class AcceptingLicenseTest < ActionController::IntegrationTest
     login_as
     visit '/'
     click_link "Contributor License"
-    assert_equal '/contributor_licenses', current_url
+    assert_equal '/contributor_licenses/sign', current_url
 
     fill_in "acceptance", :with => 'junk'
     click_button "Accept"
@@ -72,7 +72,7 @@ class AcceptingLicenseTest < ActionController::IntegrationTest
     login_as
     visit '/'
     click_link "Contributor License"
-    assert_equal '/contributor_licenses', current_url
+    assert_equal '/contributor_licenses/sign', current_url
 
     fill_in "acceptance", :with => 'i AgRee with you'
     click_button "Accept"
@@ -80,7 +80,7 @@ class AcceptingLicenseTest < ActionController::IntegrationTest
     assert_equal 'http://www.example.com/', current_url
     assert_select '.flash', :text => /accepted/i
 
-    visit '/contributor_licenses' # Direct url access
+    visit '/contributor_licenses/sign' # Direct url access
     fill_in "acceptance", :with => 'i AgRee with you'
     click_button "Accept"
 
@@ -92,7 +92,7 @@ class AcceptingLicenseTest < ActionController::IntegrationTest
     login_as
     visit '/'
     click_link "Contributor License"
-    assert_equal '/contributor_licenses', current_url
+    assert_equal '/contributor_licenses/sign', current_url
 
     click_link "Upload license agreement"
     assert_equal '/contributor_licenses/upload', current_url
