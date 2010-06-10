@@ -1,5 +1,9 @@
-class ContributorLicensesController < ApplicationController
+class ContributorLicensesController < InheritedResources::Base
   unloadable
+
+  respond_to :html
+
+  before_filter :require_admin, :except => [:sign, :create, :upload]
   
   def sign
     @contributor_license = ContributorLicense.new

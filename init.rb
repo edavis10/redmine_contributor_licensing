@@ -1,5 +1,7 @@
 require 'redmine'
 
+config.gem 'inherited_resources', :version => '1.0.6'
+
 Redmine::Plugin.register :redmine_contributor_licensing do
   name 'Redmine Contributor Licensing'
   author 'Eric Davis'
