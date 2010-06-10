@@ -1,6 +1,6 @@
 require 'redmine'
 
-config.gem 'inherited_resources', :version => '1.0.6'
+#config.gem 'inherited_resources', :lib => false, :version => '1.0.6'
 
 Redmine::Plugin.register :redmine_contributor_licensing do
   name 'Redmine Contributor Licensing'
@@ -33,6 +33,10 @@ end
 
 require 'dispatcher'
 Dispatcher.to_prepare :redmine_contributor_licensing do
+  gem 'inherited_resources', :version => '1.0.6'
+  require_dependency 'inherited_resources'
+  require_dependency 'inherited_resources/base'
+  
   require_dependency 'principal'
   require_dependency 'user'
   User.send(:include, RedmineContributorLicensing::Patches::UserPatch)
