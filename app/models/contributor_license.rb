@@ -11,6 +11,8 @@ class ContributorLicense < ActiveRecord::Base
 
   validates_inclusion_of :state, :in => %w(pending accepted), :allow_blank => false, :allow_nil => false
 
+  before_destroy :block_deleting_accepted
+  
   def after_initialize
     self.state = 'pending' unless self.state.present?
   end
@@ -39,6 +41,10 @@ class ContributorLicense < ActiveRecord::Base
   end
   alias :accepted_contributor_license? :accepted?
 
+  def block_deleting_accepted
+    !accepted?
+  end
+  
   if Rails.env.test?
     generator_for :acceptance => 'I agree'
   end

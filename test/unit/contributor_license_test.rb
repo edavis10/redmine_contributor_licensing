@@ -91,4 +91,27 @@ class ContributorLicenseTest < ActiveSupport::TestCase
       
     end
   end
+
+  context "#destroy" do
+    setup do
+      @license = ContributorLicense.generate!(:acceptance => 'I agree')
+    end
+    
+    should "delete pending records" do
+      assert_difference('ContributorLicense.count', -1) do
+        @license.destroy
+      end
+      assert_equal nil, ContributorLicense.find_by_id(@license.id)
+    end
+    
+    should "not delete accepted records" do
+      @license.accept!
+      assert_no_difference('ContributorLicense.count') do
+        @license.destroy
+      end
+      
+      assert @license.reload
+    end
+    
+  end
 end
