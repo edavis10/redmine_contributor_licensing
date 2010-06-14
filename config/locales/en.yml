@@ -13,3 +13,6 @@ en:
   contributor_licensing_label: "Contributor License"
   contributor_licensing_label_plural: "Contributor Licenses"
   contributor_licensing_label_approve: "Approve"
+  contributor_licensing_error_can_not_delete_accepted: "Contributor license was unable to be destroyed."
+  contributor_licensing_successful_delete: "Contributor license was successfully destroyed."
+

@@ -75,6 +75,45 @@ class AdministerContributorLicensesTest < ActionController::IntegrationTest
     assert_equal @user, @license.accepted_by
   end
 
+  context "deleting" do
+    should "a pending license" do
+      @user1 = create_contributor_license_and_user
+      @license = @user1.contributor_license
+    
+      login_as
+      click_link "Administration"
+      click_link "Contributor Licenses"
+
+      assert_equal "/contributor_licenses", current_url
+      assert !@license.reload.accepted?
+      click_link "Delete"
+    
+      assert_equal "http://www.example.com/contributor_licenses", current_url
+      assert_nil ContributorLicense.find_by_id(@license.id)
+      assert_select '.flash', :text => /Contributor license was successfully destroyed/i
+    end
+    
+    should "an approved license" do
+      @user1 = create_contributor_license_and_user
+      @license = @user1.contributor_license
+      @license.acceptance = 'I agree'
+      @license.accept!
+      assert @license.reload.accepted?
+    
+      login_as
+      click_link "Administration"
+      click_link "Contributor Licenses"
+
+      assert_equal "/contributor_licenses", current_url
+      click_link "Delete"
+    
+      assert_equal "http://www.example.com/contributor_licenses", current_url
+      assert ContributorLicense.find_by_id(@license.id)
+      assert_select '.flash', :text => /Contributor license was unable to be destroyed/i
+    end
+  end
+  
+
   protected
   
   def create_contributor_license_and_user

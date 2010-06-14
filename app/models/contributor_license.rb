@@ -42,7 +42,16 @@ class ContributorLicense < ActiveRecord::Base
   alias :accepted_contributor_license? :accepted?
 
   def block_deleting_accepted
-    !accepted?
+    if accepted?
+      errors.add(:base, l(:contributor_licensing_error_can_not_delete_accepted))
+      return false
+    else
+      return true
+    end
+  end
+
+  def to_s
+    "Contributor License"
   end
   
   if Rails.env.test?
