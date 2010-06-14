@@ -10,8 +10,10 @@ module ContributorLicensesHelper
       
       menu_items << link_to(l(:button_delete), contributor_license_path(contributor_license), :confirm => l(:text_are_you_sure), :method => :delete, :class => 'icon icon-del') if actions.include?(:delete)
     end
-    
-    return content_tag(:div, menu_items.join(' '), :class => "contextual")
 
+    css = "background-image: url(../images/changeset.png);"
+    menu_items << link_to(l(:button_configure), {:controller => 'settings', :action => 'plugin', :id => 'redmine_contributor_licensing'}, :class => 'icon', :style => css)
+
+    return content_tag(:div, menu_items.join(' '), :class => "contextual")
   end
 end
