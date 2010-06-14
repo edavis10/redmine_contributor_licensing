@@ -1,3 +1,5 @@
+<%= contributor_licenses_menu([:index, :delete, :approve], resource) %>
+
 <%= content_tag(:h2, l(:contributor_licensing_title)) %>
 
 <p><%= avatar resource.user, :size => "50" %> <%=h(resource.user.name) %></p>

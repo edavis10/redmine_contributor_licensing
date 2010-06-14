@@ -10,5 +10,6 @@ en:
   contributor_license_text_accepted: "Contributor License Accepted"
   contributor_license_text_pending: "Contributor License pending approval"
   contributor_licensing_text_upload: "Upload license agreement"
+  contributor_licensing_label: "Contributor License"
   contributor_licensing_label_plural: "Contributor Licenses"
   contributor_licensing_label_approve: "Approve"
