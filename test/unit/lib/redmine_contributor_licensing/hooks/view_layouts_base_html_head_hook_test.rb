@@ -30,7 +30,7 @@ class RedmineContributorLicensing::Hooks::ViewLayoutsBaseHtmlHeadTest < ActionCo
       end
 
       should "return the contributor-licensing.css" do
-        assert @response.body.include?('contributor-licensing.js')
+        assert @response.body.include?('contributor-licensing.css')
       end
     end
 
