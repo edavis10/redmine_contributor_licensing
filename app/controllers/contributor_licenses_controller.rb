@@ -4,15 +4,13 @@ class ContributorLicensesController < InheritedResources::Base
   respond_to :html
 
   before_filter :require_admin, :except => [:sign, :create, :upload]
+  before_filter :assign_new_object, :only => [:sign, :upload]
+  before_filter :assign_license_content, :only => [:sign, :create]
   
   def sign
-    @contributor_license = ContributorLicense.new
-    @content = Setting.plugin_redmine_contributor_licensing['content']
   end
 
   def create
-    @content = Setting.plugin_redmine_contributor_licensing['content']
-
     @contributor_license = User.current.build_contributor_license(params[:contributor_license])
     
     saved_or_accepted = if params[:clickwrap]
@@ -35,7 +33,6 @@ class ContributorLicensesController < InheritedResources::Base
   end
 
   def upload
-    @contributor_license = ContributorLicense.new
   end
 
   def approve
@@ -68,5 +65,13 @@ class ContributorLicensesController < InheritedResources::Base
                                                    :order => "#{User.table_name}.login ASC",
                                                    :include => :user)
   end
-  
+
+  def assign_new_object
+    @contributor_license = ContributorLicense.new
+  end
+
+  def assign_license_content
+    @content = Setting.plugin_redmine_contributor_licensing['content']
+  end
+
 end
