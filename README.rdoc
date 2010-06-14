@@ -1,25 +1,52 @@
 = Redmine Contributor Licensing
 
-TODO
+Contributor Licensing is a plugin for users to submit Contributor License Agreements to Redmine for source code ownership.
 
 == Features
 
-TODO: fill in features
+* Store the user's Contributor License Agreement acceptance
+* Administrator panel to review Contributor License Agreements
+* Show accepted Contributor License Agreements in the Repository
 
 == Getting the plugin
 
 A copy of the plugin can be downloaded from {Little Stream Software}[https://projects.littlestreamsoftware.com/projects/redmine-cla/files] or from {GitHub}[http://github.com/edavis10/redmine_contributor_licensing]
 
-
 == Installation and Setup
 
+0. Install the inherited_resources gem: <tt>gem install inherited_resources -v 1.0.6</tt>
 1. Follow the Redmine plugin installation steps at: http://www.redmine.org/wiki/redmine/Plugins 
-2. Run the plugin migrations +rake db:migrate_plugins+
+2. Run the plugin migrations <tt>rake db:migrate_plugins</tt>
 3. Restart your Redmine web servers (e.g. mongrel, thin, mod_rails)
 
 == Usage
 
-TODO: Add usage
+Each user can have one Contributor License Agreement.  The Contributor License Agreement can be accepted two ways:
+
+1. User reads the license agreement and enters "I agree"
+2. User uploads a file with their agreement (e.g. signed PDF document)
+
+=== Configuration
+
+The content for the license agreement is configurable by administrators in Administration > Plugins > Configure. (e.g. the clickwrap license)
+
+=== Signing
+
+Users who have not submitted a Contributor License Agreement will see a menu item at the top of Redmine, Contributor License.  Clicking this will show the user the clickwrap license.  Entering 'I agree' and submitting the form will agree to the license.
+
+As an alternative, the user can go to the Contributor License page and click Upload.  This will let the user upload a file as their agreement.  Signing an agreement with an upload does not approve the agreement, it has to be reviewed by an Administrator (below).
+
+=== Managing Contributor License Agreements
+
+Administrators can manage the Contributor Licenses in Administration > Contributor Licenses.  This will list all of the licenses, their state, and when each license was accepted.  Pending licenses and their files can be reviewed and deleted from this panel.
+
+=== Repository View
+
+The repository view adds a color to the names of users who have pending or approved contributor licenses:
+
+* black color (default) - no license from user
+* orange color - pending license
+* green color - approved license
 
 == License
 

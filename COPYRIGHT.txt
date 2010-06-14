@@ -1,4 +1,5 @@
-redmine_contributor_licensing is a plugin that TODO
+Contributor Licensing is a plugin for users to submit Contributor License
+Agreements to Redmine for source code ownership.
 
 Copyright (C) 2010 Eric Davis of Little Stream Software
 

@@ -15,10 +15,10 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |s|
     s.name = "redmine_contributor_licensing"
-    s.summary = "TODO"
+    s.summary = "Contributor Licensing is a plugin for users to submit Contributor License Agreements to Redmine for source code ownership."
     s.email = "edavis@littlestreamsoftware.com"
     s.homepage = "https://projects.littlestreamsoftware.com/projects/redmine-cla"
-    s.description = "TODO"
+    s.description = "Contributor Licensing is a plugin for users to submit Contributor License Agreements to Redmine for source code ownership."
     s.authors = ["Eric Davis"]
     s.rubyforge_project = "TODO" # TODO
     s.files =  FileList[
