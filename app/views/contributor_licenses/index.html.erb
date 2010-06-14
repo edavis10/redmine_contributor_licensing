@@ -2,6 +2,7 @@
 
 <h2><%= l(:contributor_licensing_label_plural) %></h2>
 
+<%if collection.present? %>
 <div class="autoscroll">
   <table class="list" id="contributor-licenses">
     <thead>
@@ -32,4 +33,7 @@
   </table>
 </div>
 
+<% else %>
+<p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>
 <% html_title(l(:contributor_licensing_label_plural)) %>
