@@ -12,6 +12,9 @@ class ContributorLicense < ActiveRecord::Base
   validates_inclusion_of :state, :in => %w(pending accepted), :allow_blank => false, :allow_nil => false
 
   before_destroy :block_deleting_accepted
+
+  named_scope :assigned_to_users, :conditions => ["#{ContributorLicense.table_name}.user_id IS NOT NULL"]
+  named_scope :sorted_by_login, :order => "#{User.table_name}.login ASC", :include => :user
   
   def after_initialize
     self.state = 'pending' unless self.state.present?

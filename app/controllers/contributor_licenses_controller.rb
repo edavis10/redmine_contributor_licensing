@@ -61,9 +61,7 @@ class ContributorLicensesController < InheritedResources::Base
   
   protected
   def collection
-    @contributor_licenses = ContributorLicense.all(:conditions => ["#{ContributorLicense.table_name}.user_id IS NOT NULL"],
-                                                   :order => "#{User.table_name}.login ASC",
-                                                   :include => :user)
+    @contributor_licenses = ContributorLicense.assigned_to_users.sorted_by_login
   end
 
   def assign_new_object
