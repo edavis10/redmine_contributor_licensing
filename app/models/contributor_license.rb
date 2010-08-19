@@ -62,6 +62,11 @@ class ContributorLicense < ActiveRecord::Base
                     :conditions => ["#{ContributorLicense.table_name}.id is NULL"]).sort
   end
 
+  def self.signers_for_project(project)
+    project.users.all(:include => :contributor_license,
+                      :conditions => ["#{ContributorLicense.table_name}.id is NOT NULL AND #{ContributorLicense.table_name}.state = ?", "accepted"])
+  end
+  
   if Rails.env.test?
     generator_for :acceptance => 'I agree'
   end

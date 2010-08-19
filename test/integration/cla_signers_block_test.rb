@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class BadgeTest < ActionController::IntegrationTest
+class ClaSignersBlockTest < ActionController::IntegrationTest
   include IntegrationTestHelper
 
   def setup
@@ -16,15 +16,15 @@ class BadgeTest < ActionController::IntegrationTest
     User.add_to_project(@user3, @project, @role)
   end
 
-  should "show the CLA badge next each user name who has accepted" do
+  should "show the CLA signers at the bottom of the members block" do
     visit "/projects/#{@project.identifier}"
     assert_response :success
 
-    assert_select ".members" do
-      assert_select "p", :text => /#{@role.name}/ do
-        # 2 CLA members, 3 total
-        assert_select("a[class=?]", "icon icon-contributor-license", :count => 2)
-        assert_select("a", :count => 3)
+    assert_select "div.members.box" do
+      assert_select ".members" do
+        assert_select "p", :text => /Contributor License Signers:/ do
+          assert_select "a", :count => 2
+        end
       end
     end
   end

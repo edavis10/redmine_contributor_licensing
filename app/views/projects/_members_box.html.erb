@@ -4,5 +4,8 @@
 		<p><% @users_by_role.keys.sort.each do |role| %>
 		<%=h role %>: <%= @users_by_role[role].sort.collect{|u| link_to_user u}.join(", ") %><br />
 		<% end %></p>
+    <p>
+      <%= l(:text_contributor_license_signers) %>: <%= ContributorLicense.signers_for_project(@project).collect {|u| link_to_user(u) }.join(", ") %>
+    </p>
 	</div>
 	<% end %>
