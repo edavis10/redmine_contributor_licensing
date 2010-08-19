@@ -33,15 +33,15 @@ class RedmineContributorLicensing::Hooks::ViewLayoutsBaseHtmlHeadTest < ActionCo
         assert @response.body.include?('contributor-licensing.css')
       end
 
-      should "return the css for the Admin menu item" do
-        assert @response.body.include?('/plugin_assets/redmine_contributor_licensing/images/briefcase.png')
+      should "return the css stylesheet link" do
+        assert @response.body.include?('contributor-licensing.css')
       end
     end
 
     context "for any other controller" do
-      should "return the css for the Admin menu item" do
+      should "return the css stylesheet link" do
         @response.body = hook
-        assert @response.body.include?('/plugin_assets/redmine_contributor_licensing/images/briefcase.png')
+        assert @response.body.include?('contributor-licensing.css')
       end
     end
   end
