@@ -2,7 +2,7 @@ module RedmineContributorLicensing
   module Hooks
     class ViewLayoutsBaseHtmlHeadHook < Redmine::Hook::ViewListener
       def view_layouts_base_html_head(context={})
-        content = content_tag(:style, "#admin-menu .contributor-license { background-image: url(/plugin_assets/redmine_contributor_licensing/images/briefcase.png);}", :type => 'text/css')
+        content = stylesheet_link_tag('contributor-licensing.css', :plugin => 'redmine_contributor_licensing')
         
         if context[:controller] && context[:controller].is_a?(RepositoriesController)
 

@@ -1,2 +1,6 @@
 span.pending { color: #FF9900; }
 span.accepted { color: #007700; }
+
+#admin-menu .contributor-license { background-image: url(../images/briefcase.png); }
+
+.icon-contributor-license { background-image: url(../images/award_star_gold_3.png); } /* From silk icons */
