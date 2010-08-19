@@ -31,3 +31,6 @@ module IntegrationTestHelper
   end
 end
 
+def User.add_to_project(user, project, role)
+  Member.generate!(:principal => user, :project => project, :roles => [role])
+end

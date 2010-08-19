@@ -40,5 +40,8 @@ Dispatcher.to_prepare :redmine_contributor_licensing do
   require_dependency 'principal'
   require_dependency 'user'
   User.send(:include, RedmineContributorLicensing::Patches::UserPatch)
+
+  require_dependency 'application_helper'
+  ApplicationHelper.send(:include, RedmineContributorLicensing::Patches::ApplicationHelperPatch)
 end
 require 'redmine_contributor_licensing/hooks/view_layouts_base_html_head_hook'
