@@ -57,6 +57,11 @@ class ContributorLicense < ActiveRecord::Base
     "Contributor License"
   end
   
+  def self.missing_users
+    User.active.all(:include => :contributor_license,
+                    :conditions => ["#{ContributorLicense.table_name}.id is NULL"]).sort
+  end
+
   if Rails.env.test?
     generator_for :acceptance => 'I agree'
   end

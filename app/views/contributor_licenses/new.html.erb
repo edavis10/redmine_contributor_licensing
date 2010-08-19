@@ -1,0 +1,13 @@
+<%= contributor_licenses_menu([:index]) %>
+
+<%= content_tag(:h1, l(:text_new_contributor_license)) %>
+
+<% form_for @contributor_license, :builder => TabularFormBuilder do |f| %>
+  <%= hidden_field(:clickwrap, true) %>
+  <%= f.hidden_field(:acceptance, :value => "I agree. #{h(User.current.login)}") %>
+  <p>
+    <%= f.select(:user_id, ContributorLicense.missing_users.collect {|u| [u.name, u.id]}, :required => true) %>
+  </p>
+  
+  <%= submit_tag(l(:contributor_licensing_label_accept)) %>
+<% end %>

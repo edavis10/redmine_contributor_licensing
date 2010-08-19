@@ -2,6 +2,7 @@ module ContributorLicensesHelper
   def contributor_licenses_menu(actions, contributor_license = nil)
     menu_items = []
     menu_items << link_to(l(:contributor_licensing_label_plural), contributor_licenses_path, :class => 'icon icon-multiple') if actions.include?(:index)
+    menu_items << link_to(l(:text_new_contributor_license), new_contributor_license_path, :class => 'icon icon-add')
 
     if contributor_license
       menu_items << link_to(l(:contributor_licensing_label), contributor_license_path(contributor_license), :class => 'icon icon-document') if actions.include?(:show)

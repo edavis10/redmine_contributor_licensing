@@ -75,6 +75,31 @@ class AdministerContributorLicensesTest < ActionController::IntegrationTest
     assert_equal @user, @license.accepted_by
   end
 
+  should "allow creating a new Contributor License" do
+    @faxed_user = User.generate!(:login => 'faxeduser', :firstname => 'Faxed', :lastname => 'User', :admin => false)
+
+    login_as
+    click_link "Administration"
+    click_link "Contributor Licenses"
+
+    assert_equal "/contributor_licenses", current_url
+
+    click_link "New Contributor License"
+    assert_equal "/contributor_licenses/new", current_url
+
+    # Admins can pick a different user
+    select "Faxed User", :from => 'User'
+    click_button "Accept"
+
+    assert_equal 'http://www.example.com/contributor_licenses', current_url
+    assert_select '.flash', :text => /accepted/i
+
+    license = @faxed_user.contributor_license
+    assert license
+    assert_equal 'accepted', license.state
+    assert_equal @user, license.accepted_by
+  end
+
   context "deleting" do
     should "a pending license" do
       @user1 = create_contributor_license_and_user

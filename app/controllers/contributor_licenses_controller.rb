@@ -11,7 +11,7 @@ class ContributorLicensesController < InheritedResources::Base
   end
 
   def create
-    @contributor_license = User.current.build_contributor_license(params[:contributor_license])
+    @contributor_license = user_proxy.build_contributor_license(params[:contributor_license])
     
     saved_or_accepted = if params[:clickwrap]
                           @contributor_license.accept!
@@ -26,7 +26,11 @@ class ContributorLicensesController < InheritedResources::Base
       else
         flash[:notice] = l(:contributor_license_text_pending)
       end
-      redirect_to root_path
+      if user_proxy == User.current
+        redirect_to root_path
+      else # Admins
+        redirect_to contributor_licenses_path
+      end
     else
       render :action => 'sign'
     end
@@ -72,4 +76,12 @@ class ContributorLicensesController < InheritedResources::Base
     @content = Setting.plugin_redmine_contributor_licensing['content']
   end
 
+  # A simple proxy to the current user or paramaterized user (admins only)
+  def user_proxy
+    if User.current.admin? && params[:contributor_license].present? && params[:contributor_license][:user_id].present?
+      User.find(params[:contributor_license][:user_id])
+    else
+      User.current
+    end
+  end
 end
