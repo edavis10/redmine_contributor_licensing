@@ -62,6 +62,16 @@ class ContributorLicensesController < InheritedResources::Base
       }
     end
   end
+
+  def report
+    @state = params[:state] || ''
+
+    @user_count = User.count
+    @user_pages = Paginator.new(self, @user_count, per_page_option, params['page'])
+    @users = User.active.with_contributor_license_of(@state).all(:limit => @user_pages.items_per_page, :offset => @user_pages.current.offset)
+
+    render :layout => !request.xhr?	
+  end
   
   protected
   def collection

@@ -137,7 +137,73 @@ class AdministerContributorLicensesTest < ActionController::IntegrationTest
       assert_select '.flash', :text => /Contributor license was unable to be destroyed/i
     end
   end
-  
+
+  context "reporting on" do
+    setup do
+      @no_license = User.generate!
+      @pending_license = create_contributor_license_and_user
+      @accepted_license = create_contributor_license_and_user
+      @accepted_license.contributor_license.update_attribute(:state, 'accepted')
+      [@no_license, @pending_license, @accepted_license].collect(&:reload)
+      
+      login_as
+      click_link "Administration"
+      click_link "Contributor Licenses"
+
+      assert_equal "/contributor_licenses", current_url
+
+      click_link "User Report"
+      assert_response :success
+      
+    end
+    
+    should "all users" do
+      assert_select "table" do
+        assert_select "a", :text => /#{@no_license.name}/, :count => 1
+        assert_select "a", :text => /#{@pending_license.name}/, :count => 1
+        assert_select "a", :text => /#{@accepted_license.name}/, :count => 1
+      end
+    end
+
+    should "who has not signed" do
+      select "No license", :from => 'State'
+      click_button 'Apply'
+      
+      assert_response :success
+
+      assert_select "table" do
+        assert_select "a", :text => /#{@no_license.name}/, :count => 1
+        assert_select "a", :text => /#{@pending_license.name}/, :count => 0
+        assert_select "a", :text => /#{@accepted_license.name}/, :count => 0
+      end
+    end
+    
+    should "who has signed" do
+      select "Accepted license", :from => 'State'
+      click_button 'Apply'
+      
+      assert_response :success
+
+      assert_select "table" do
+        assert_select "a", :text => /#{@no_license.name}/, :count => 0
+        assert_select "a", :text => /#{@pending_license.name}/, :count => 0
+        assert_select "a", :text => /#{@accepted_license.name}/, :count => 1
+      end
+    end
+    
+    should "who has a pending signature" do
+      select "Pending license", :from => 'State'
+      click_button 'Apply'
+      
+      assert_response :success
+
+      assert_select "table" do
+        assert_select "a", :text => /#{@no_license.name}/, :count => 0
+        assert_select "a", :text => /#{@pending_license.name}/, :count => 1
+        assert_select "a", :text => /#{@accepted_license.name}/, :count => 0
+      end
+    end
+  end  
 
   protected
   

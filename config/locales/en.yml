@@ -17,3 +17,8 @@ en:
   contributor_licensing_successful_delete: "Contributor license was successfully destroyed."
   text_new_contributor_license: "New Contributor License"
   text_contributor_license_signers: "Contributor License Signers"
+  text_contributor_report: "User Report"
+  text_no_license: "No license"
+  text_pending_license: "Pending license"
+  text_accepted_license: "Accepted license"
+

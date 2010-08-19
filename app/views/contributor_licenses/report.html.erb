@@ -1,0 +1,43 @@
+<%= contributor_licenses_menu([:index]) %>
+
+<h2><%= l(:contributor_licensing_label_plural) %></h2>
+
+<% form_tag({}, :method => :get) do %>
+<fieldset><legend><%= l(:label_filter_plural) %></legend>
+<label for="state"><%= l(:field_state) %>:</label>
+<%= select_tag 'state', license_status_options_for_select(@state), :class => "small", :onchange => "this.form.submit(); return false;"  %>
+<%= submit_tag l(:button_apply), :class => "small", :name => nil %>
+</fieldset>
+<% end %>
+
+<%if @users.present? %>
+<div class="autoscroll">
+  <table class="list" id="contributor-licenses">
+    <thead>
+      <tr>
+        <%= content_tag(:th, l(:field_user)) %>
+        <%= content_tag(:th, l(:field_state)) %>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @users.each do |user| -%>
+        <tr class="user <%= cycle("odd", "even") %>">
+	        <td class="username">
+            <%= avatar(user, :size => "14") %>
+            <%= link_to_user(user) %>
+          </td>
+	        <td align="center"><%= h(user.contributor_license.try(:state)) %></td>
+        </tr>
+      <% end -%>
+    </tbody>
+  </table>
+</div>
+
+<p class="pagination"><%= pagination_links_full @user_pages, @user_count %></p>
+
+<% else %>
+<p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>
+<% html_title(l(:contributor_licensing_label_plural)) %>
+
