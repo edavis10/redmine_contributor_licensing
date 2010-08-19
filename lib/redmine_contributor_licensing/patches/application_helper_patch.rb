@@ -3,7 +3,6 @@ module RedmineContributorLicensing
     module ApplicationHelperPatch
       def self.included(base)
         base.class_eval do
-          unloadable
 
           # Identical to the link_to_user method but will add an extra css
           # classes to users who have accepted the contributor license.
