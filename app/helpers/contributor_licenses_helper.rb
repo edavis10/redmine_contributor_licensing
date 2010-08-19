@@ -12,8 +12,6 @@ module ContributorLicensesHelper
       menu_items << link_to(l(:button_delete), contributor_license_path(contributor_license), :confirm => l(:text_are_you_sure), :method => :delete, :class => 'icon icon-del') if actions.include?(:delete)
     end
 
-    menu_items << link_to(l(:text_contributor_report), report_contributor_licenses_path, :class => 'icon icon-report')
-
     css = "background-image: url(../images/changeset.png);"
     menu_items << link_to(l(:button_configure), {:controller => 'settings', :action => 'plugin', :id => 'redmine_contributor_licensing'}, :class => 'icon', :style => css)
 

@@ -2,6 +2,14 @@
 
 <h2><%= l(:contributor_licensing_label_plural) %></h2>
 
+<% form_tag({}, :method => :get) do %>
+<fieldset><legend><%= l(:label_filter_plural) %></legend>
+<label for="state"><%= l(:field_state) %>:</label>
+<%= select_tag 'state', license_status_options_for_select(@state), :class => "small", :onchange => "this.form.submit(); return false;"  %>
+<%= submit_tag l(:button_apply), :class => "small", :name => nil %>
+</fieldset>
+<% end %>
+
 <%if collection.present? %>
 <div class="autoscroll">
   <table class="list" id="contributor-licenses">
@@ -15,23 +23,34 @@
     </thead>
 
     <tbody>
-      <% collection.each do |license| -%>
-        <tr class="user <%= cycle("odd", "even") %>" id="contributor-license-<%= h(license.id) %>">
+      <% collection.each do |user| -%>
+        <% license = user.contributor_license %>
+        <tr class="user <%= cycle("odd", "even") %>" id="contributor-license-<%= h(license.try(:id)) %>">
 	        <td class="username">
-            <%= avatar(license.user, :size => "14") %>
-            <%= link_to h(license.user.login), contributor_license_path(license) %>
+            <%= avatar(user, :size => "14") %>
+            <% if license %>
+              <%= link_to h(user.name), contributor_license_path(license) %>
+            <% else %>
+              <%= link_to h(user.name), new_contributor_license_path %>
+            <% end %>
           </td>
-	        <td align="center"><%= h(license.state) %></td>
-	        <td class="created_on" align="center"><%= format_time(license.accepted_at) %></td>
+	        <td align="center"><%= h(license.try(:state)) %></td>
+	        <td class="created_on" align="center"><%= format_time(license.try(:accepted_at)) %></td>
           <td class="buttons">
-            <%= link_to(l(:contributor_licensing_label_approve), approve_contributor_license_path(license), :method => :put, :class => 'icon icon-edit') unless license.accepted? %>
-            <%= link_to(l(:button_delete), contributor_license_path(license), :confirm => l(:text_are_you_sure), :method => :delete, :class => 'icon icon-del') %>
+            <% if license %>
+              <%= link_to(l(:contributor_licensing_label_approve), approve_contributor_license_path(license), :method => :put, :class => 'icon icon-edit') unless license.accepted? %>
+              <%= link_to(l(:button_delete), contributor_license_path(license), :confirm => l(:text_are_you_sure), :method => :delete, :class => 'icon icon-del') %>
+            <% else %>
+              <%= link_to(l(:text_new_contributor_license), new_contributor_license_path) %>
+            <% end %>
           </td>
         </tr>
       <% end -%>
     </tbody>
   </table>
 </div>
+
+<p class="pagination"><%= pagination_links_full @user_pages, @user_count %></p>
 
 <% else %>
 <p class="nodata"><%= l(:label_no_data) %></p>

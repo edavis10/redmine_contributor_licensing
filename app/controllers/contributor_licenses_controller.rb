@@ -6,6 +6,12 @@ class ContributorLicensesController < InheritedResources::Base
   before_filter :require_admin, :except => [:sign, :create, :upload]
   before_filter :assign_new_object, :only => [:sign, :upload]
   before_filter :assign_license_content, :only => [:sign, :create]
+
+  def index
+    index! do |format|
+      format.html { render :layout => !request.xhr?	 }
+    end
+  end
   
   def sign
   end
@@ -63,19 +69,13 @@ class ContributorLicensesController < InheritedResources::Base
     end
   end
 
-  def report
-    @state = params[:state] || ''
-
-    @user_count = User.count
-    @user_pages = Paginator.new(self, @user_count, per_page_option, params['page'])
-    @users = User.active.with_contributor_license_of(@state).all(:limit => @user_pages.items_per_page, :offset => @user_pages.current.offset)
-
-    render :layout => !request.xhr?	
-  end
-  
   protected
   def collection
-    @contributor_licenses = ContributorLicense.assigned_to_users.sorted_by_login
+    @state = params[:state] || 'accepted'
+
+    @user_count = User.active.with_contributor_license_of(@state).count
+    @user_pages = Paginator.new(self, @user_count, per_page_option, params['page'])
+    @users = User.active.with_contributor_license_of(@state).all(:limit => @user_pages.items_per_page, :offset => @user_pages.current.offset)
   end
 
   def assign_new_object

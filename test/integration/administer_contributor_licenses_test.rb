@@ -19,14 +19,16 @@ class AdministerContributorLicensesTest < ActionController::IntegrationTest
 
     assert_equal "/contributor_licenses", current_url
 
+    change_list_state_to 'pending'
+
     assert_select "table#contributor-licenses" do
       assert_select "tr#contributor-license-#{@user1.contributor_license.id}" do
-        assert_select 'td', :text => /#{@user1.login}/
+        assert_select 'td', :text => /#{@user1.name}/
         assert_select 'td', :text => /#{@user1.contributor_license.state }/
       end
 
       assert_select "tr#contributor-license-#{@user2.contributor_license.id}" do
-        assert_select 'td', :text => /#{@user2.login}/
+        assert_select 'td', :text => /#{@user2.name}/
         assert_select 'td', :text => /#{@user2.contributor_license.state }/
       end
 
@@ -46,7 +48,9 @@ class AdministerContributorLicensesTest < ActionController::IntegrationTest
 
     assert_equal "/contributor_licenses", current_url
 
-    click_link @user1.login
+    change_list_state_to 'pending'
+
+    click_link @user1.name
     assert_equal "/contributor_licenses/#{@license.id}", current_url
 
     assert_select 'p', :text => /#{@user1.name}/
@@ -68,6 +72,8 @@ class AdministerContributorLicensesTest < ActionController::IntegrationTest
 
     assert_equal "/contributor_licenses", current_url
     assert !@license.reload.accepted?
+
+    change_list_state_to 'pending'
     click_link "Approve"
     
     assert_equal "http://www.example.com/contributor_licenses", current_url
@@ -111,6 +117,8 @@ class AdministerContributorLicensesTest < ActionController::IntegrationTest
 
       assert_equal "/contributor_licenses", current_url
       assert !@license.reload.accepted?
+
+      change_list_state_to 'pending'
       click_link "Delete"
     
       assert_equal "http://www.example.com/contributor_licenses", current_url
@@ -150,14 +158,16 @@ class AdministerContributorLicensesTest < ActionController::IntegrationTest
       click_link "Administration"
       click_link "Contributor Licenses"
 
-      assert_equal "/contributor_licenses", current_url
-
-      click_link "User Report"
       assert_response :success
-      
+      assert_equal "/contributor_licenses", current_url
     end
     
     should "all users" do
+      select "all", :from => 'State'
+      click_button 'Apply'
+      
+      assert_response :success
+
       assert_select "table" do
         assert_select "a", :text => /#{@no_license.name}/, :count => 1
         assert_select "a", :text => /#{@pending_license.name}/, :count => 1
@@ -206,6 +216,21 @@ class AdministerContributorLicensesTest < ActionController::IntegrationTest
   end  
 
   protected
+
+  def change_list_state_to(state)
+    case state
+    when 'accepted'
+      select "Accepted license", :from => 'State'
+    when 'pending'
+      select "Pending license", :from => 'State'
+    when 'none'
+      select "No license", :from => 'State'
+    when 'all'
+      select "all", :from => 'State'
+    end
+    
+    click_button 'Apply'
+  end
   
   def create_contributor_license_and_user
     user = User.generate!
