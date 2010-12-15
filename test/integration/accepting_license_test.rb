@@ -44,15 +44,39 @@ class AcceptingLicenseTest < ActionController::IntegrationTest
     assert_response :success
     assert_select "#top-menu a.contributor-license"
   end
-  
-  should "not show the top menu link to users who have already submitted a ContributorLicense" do
-    @license = ContributorLicense.generate! # Doesn't need to be accepted
-    @user.contributor_license = @license
+
+  context "for a user who has already submitted a Contributor License" do
+    setup do
+      @license = ContributorLicense.generate! # Doesn't need to be accepted
+      @user.contributor_license = @license
+      login_as
+    end
     
-    login_as
-    visit '/'
-    assert_response :success
-    assert_select "#top-menu a.contributor-license", :count => 0
+    should "not show the top menu link" do
+      visit '/'
+      assert_response :success
+      assert_select "#top-menu a.contributor-license", :count => 0
+    end
+
+    should "not allow access to the signing page again" do
+      visit '/contributor_licenses/sign'
+      assert_response :success
+      assert_equal '/', current_path
+    end
+  
+    should "re-signing a license agreement (raw POST)" do
+      assert_no_difference('ContributorLicense.count') do
+        post '/contributor_licenses', :clickwrap => 'true', :acceptance => 'I agree'
+        assert_response :redirect
+      end
+    end
+
+    should "re-uploading a license agreement" do
+      visit '/contributor_licenses/upload'
+      assert_response :success
+      assert_equal '/', current_path
+    end
+
   end
 
   should "show the license content on the CLA page" do
@@ -111,8 +135,8 @@ class AcceptingLicenseTest < ActionController::IntegrationTest
     assert_select '.flash', :text => /accepted/i
 
     visit '/contributor_licenses/sign' # Direct url access
-    fill_in "acceptance", :with => 'i AgRee with you'
-    click_button "Accept"
+    assert_response :success
+    assert_equal '/', current_path
 
     assert_equal 1, ContributorLicense.count(:conditions => {:user_id => @user.id})
   end

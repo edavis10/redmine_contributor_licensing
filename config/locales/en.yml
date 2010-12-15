@@ -21,4 +21,4 @@ en:
   text_no_license: "No license"
   text_pending_license: "Pending license"
   text_accepted_license: "Accepted license"
-
+  text_contributor_license_exists: "A Contributor License already exists, signing again is not allowed."

@@ -5,6 +5,7 @@ class ContributorLicensesController < InheritedResources::Base
 
   before_filter :require_login
   before_filter :require_admin, :except => [:sign, :create, :upload]
+  before_filter :check_for_previous_agreement, :only => [:sign, :create, :upload]
   before_filter :assign_new_object, :only => [:sign, :upload]
   before_filter :assign_license_content, :only => [:sign, :create]
 
@@ -87,6 +88,21 @@ class ContributorLicensesController < InheritedResources::Base
     @content = Setting.plugin_redmine_contributor_licensing['content']
   end
 
+  def check_for_previous_agreement
+    if user_proxy.contributor_license.present?
+      if user_proxy == User.current
+        flash[:warning] = l(:text_contributor_license_exists)
+        redirect_to root_path
+      else # Admins
+        flash[:warning] = l(:text_contributor_license_exists)
+        redirect_to contributor_licenses_path
+      end
+      return false
+    else
+      return true
+    end
+  end
+  
   # A simple proxy to the current user or paramaterized user (admins only)
   def user_proxy
     if User.current.admin? && params[:contributor_license].present? && params[:contributor_license][:user_id].present?
