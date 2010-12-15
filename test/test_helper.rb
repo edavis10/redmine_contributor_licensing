@@ -18,6 +18,13 @@ class ActiveSupport::TestCase
   def setup_plugin_configuration
     configure_plugin({'content' => "h1. Here is some content\n\n_Sign below_"})
   end
+
+  # Cleanup current_url to remove the host; sometimes it's present, sometimes it's not
+  def current_path
+    return nil if current_url.nil?
+    return current_url.gsub("http://www.example.com","")
+  end
+
 end
 
 module IntegrationTestHelper

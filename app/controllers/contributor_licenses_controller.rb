@@ -3,6 +3,7 @@ class ContributorLicensesController < InheritedResources::Base
 
   respond_to :html
 
+  before_filter :require_login
   before_filter :require_admin, :except => [:sign, :create, :upload]
   before_filter :assign_new_object, :only => [:sign, :upload]
   before_filter :assign_license_content, :only => [:sign, :create]

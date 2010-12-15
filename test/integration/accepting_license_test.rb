@@ -9,6 +9,35 @@ class AcceptingLicenseTest < ActionController::IntegrationTest
     @user = User.generate!(:login => 'existing', :password => 'existing', :password_confirmation => 'existing', :admin => true)
   end
 
+  should "not allow anonymous users to access the signing page" do
+    assert !User.current.logged?
+    visit '/'
+    assert_response :success
+
+    assert_select "#top-menu a.contributor-license", :count => 0
+
+    visit '/contributor_licenses/sign'
+    assert_response :success
+    assert_match /login\?back_url/, current_path
+  end
+  
+  should "not allow anonymous users to fake signing a license agreement (raw POST)" do
+    assert !User.current.logged?
+
+    assert_no_difference('ContributorLicense.count') do
+      post '/contributor_licenses', :clickwrap => 'true', :acceptance => 'I agree'
+      assert_response :redirect
+    end
+  end
+
+  should "not allow anonymous users to upload a license agreement" do
+    assert !User.current.logged?
+
+    visit '/contributor_licenses/upload'
+    assert_response :success
+    assert_match /login\?back_url/, current_path
+  end
+
   should "show the top menu link to a user who hasn't accepted yet" do
     login_as
     visit '/'
